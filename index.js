@@ -1,13 +1,11 @@
 const mysql = require("mysql");
 const inquirer = require("inquirer");
-//require("console.table");
-// const sql = require("./sql");
 
 var connection = mysql.createConnection({
   host: "localhost",
   port: 3306,
   user: "root",
-  password: "Mysql111!",
+  password: "root1",//work pwd Mysql111!
   database: "dbTracker"
 });
 
@@ -19,30 +17,25 @@ connection.connect(function (err) {
 });
 
 // function which prompts the user for what action they should take
-function firstPrompt() {
 // Build a command-line application that at a minimum allows the user to:
 // Add departments, roles, employees
 // View departments, roles, employees
 // Update employee roles
-
-// Bonus points if you're able to:
-// Update employee managers
-// View employees by manager
-// Delete departments, roles, and employees
-// View the total utilized budget of a department -- ie the combined salaries of all employees in that department
-
+function firstPrompt() {
   inquirer
     .prompt({
       type: "list",
       name: "task",
       message: "What would you like to do?",
       choices: [
-        "View Employees",
-        "View Employees by Department",
-        // "View Employees by Manager",
+        "Add Department",
+        "Add Role",
         "Add Employee",
-        "Remove Employees",
+        "View Departments",
+        "View Roles",
+        "View Employees",
         "Update Employee Role",
+        "Remove Employees",
         "Add Role",
         // "Remove Role",
         // "Update Employee Manager",
@@ -56,9 +49,9 @@ function firstPrompt() {
         case "View Employees by Department":
           viewEmployeeByDepartment();
           break;
-        // case "View Employees by Manager":
-        //   viewEmployeeByManager();
-        //   break;
+        case "View Employees by Manager":
+          viewEmployeeByManager();
+          break;
         case "Add Employee":
           addEmployee();
           break;
@@ -85,6 +78,13 @@ function firstPrompt() {
       }
     });
 }
+
+
+// Bonus points if you're able to:
+// Update employee managers
+// View employees by manager
+// Delete departments, roles, and employees
+// View the total utilized budget of a department -- ie the combined salaries of all employees in that department
 
 //1."View Employees"/ READ all, SELECT * FROM
 
@@ -113,9 +113,7 @@ function viewEmployee() {
 }
 
 // 2."View Employees by Department" / READ by, SELECT * FROM
-
 // Make a department array
-
 function viewEmployeeByDepartment() {
   console.log("Viewing employees by department\n");
 
@@ -131,11 +129,6 @@ function viewEmployeeByDepartment() {
   connection.query(query, function (err, res) {
     if (err) throw err;
 
-    // const departmentChoices = res.map(({ id, name }) => ({
-    //   name: `${id} ${name}`,
-    //   value: id
-    // }));
-
     const departmentChoices = res.map(data => ({
       value: data.id, name: data.name
     }));
@@ -149,7 +142,6 @@ function viewEmployeeByDepartment() {
 }
 
 // User choose the department list, then employees pop up
-
 function promptDepartment(departmentChoices) {
 
   inquirer
@@ -186,12 +178,8 @@ function promptDepartment(departmentChoices) {
 
 // 3."View Employees by Manager"
 
-
-
 // 4."Add Employee" / CREATE: INSERT INTO
-
 // Make a employee array
-
 function addEmployee() {
   console.log("Inserting an employee!")
 

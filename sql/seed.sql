@@ -36,3 +36,25 @@ INSERT INTO employee (id, first_name, last_name, role_id, manager_id)
 VALUES (7,"Despard", "Murgatroyd", 4, 7);
 INSERT INTO employee (id, first_name, last_name, role_id, manager_id)
 VALUES (8,"Lionel", "Grisbane", 1, 2);
+
+--adding stuff into employee
+-- try {
+--   var post  = {first_name: "pat", last_name:"d",role_id:"3",manager_id:"1"};//the record set
+--   var query = connection.query('INSERT INTO employee SET ?', post, function (error, results, fields) {
+--     if (error) throw error;
+--     // Neat!
+--   });
+--   console.log(query.sql); // INSERT INTO posts SET `id` = 1, `title` = 'Hello MySQL'
+-- }
+-- catch (error) {
+--   console.log("Cant add user try again dummy");
+-- }
+
+--show the table first then explain how to 
+--maybe make a list of teh table info and have teh user select the item from that (inquirer)
+--the below would get rid of vincent 
+-- connection.query('UPDATE employee SET manager_id = ? WHERE id = ?', ['1', '6'], function (error, results, fields) {
+--   if (error) throw error;
+--   // ...
+-- });
+
