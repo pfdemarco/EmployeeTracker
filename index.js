@@ -46,8 +46,11 @@ function firstPrompt() {
         case "View Employees":
           viewEmployee();
           break;
-        case "View Employees by Department":
-          viewEmployeeByDepartment();
+        case "View Roles":
+          viewRole();
+          break;
+        case "View Departments":
+          viewDepartment();
           break;
         case "View Employees by Manager":
           viewEmployeeByManager();
@@ -87,7 +90,6 @@ function firstPrompt() {
 // View the total utilized budget of a department -- ie the combined salaries of all employees in that department
 
 //1."View Employees"/ READ all, SELECT * FROM
-
 function viewEmployee() {
   console.log("Viewing employees\n");
 
@@ -106,6 +108,40 @@ function viewEmployee() {
 
     console.table(res);
     console.log("Employees viewed!\n");
+
+    firstPrompt();
+  });
+  // console.log(query.sql);
+}
+
+function viewRole() {
+  console.log("Viewing roles\n");
+
+  var query =
+    `SELECT * from role`
+
+  connection.query(query, function (err, res) {
+    if (err) throw err;
+
+    console.table(res);
+    console.log("Roles viewed!\n");
+
+    firstPrompt();
+  });
+  // console.log(query.sql);
+}
+
+function viewDepartment() {
+  console.log("Viewing departments\n");
+
+  var query =
+    `SELECT * from department`
+
+  connection.query(query, function (err, res) {
+    if (err) throw err;
+
+    console.table(res);
+    console.log("Departments viewed!\n");
 
     firstPrompt();
   });
@@ -230,6 +266,21 @@ function promptInsert(roleChoices) {
     ])
     .then(function (answer) {
       console.log(answer);
+      
+      
+      try {
+        var post  = {first_name: "pat", last_name:"d",role_id:"3",manager_id:"1"};//the record set
+         var query = connection.query('INSERT INTO employee SET ?', post, function (error, results, fields) {
+           if (error) throw error;
+           // Neat!
+         });
+         console.log(query.sql); // INSERT INTO posts SET `id` = 1, `title` = 'Hello MySQL'
+       }
+       catch (error) {
+         console.log("Cant add user try again dummy");
+       }
+
+
 
       var query = `INSERT INTO employee SET ?`
       connection.query(query,
