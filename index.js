@@ -21,6 +21,12 @@ connection.connect(function (err) {
 // Add departments, roles, employees
 // View departments, roles, employees
 // Update employee roles
+
+// Bonus points if you're able to:
+// Update employee managers
+// View employees by manager
+// Delete departments, roles, and employees
+// View the total utilized budget of a department -- ie the combined salaries of all employees in that department
 function firstPrompt() {
   inquirer
     .prompt({
@@ -44,13 +50,23 @@ function firstPrompt() {
     .then(function ({ task }) {
       switch (task) {
         case "View Employees":
-          viewEmployee();
+          //viewEmployee();
+          queryTable("employee",`SELECT e.id, e.first_name, e.last_name, r.title, d.name AS department, r.salary, CONCAT(m.first_name, ' ', m.last_name) AS manager
+          FROM employee e
+          LEFT JOIN role r
+          ON e.role_id = r.id
+          LEFT JOIN department d
+          ON d.id = r.department_id
+          LEFT JOIN employee m
+          ON m.id = e.manager_id`);
           break;
         case "View Roles":
-          viewRole();
+          //viewRole();
+          queryTable("role",  `SELECT * from role`);
           break;
         case "View Departments":
-          viewDepartment();
+          //viewDepartment();
+          queryTable("department",`SELECT * from department`)
           break;
         case "View Employees by Manager":
           viewEmployeeByManager();
@@ -82,71 +98,28 @@ function firstPrompt() {
     });
 }
 
-
-// Bonus points if you're able to:
-// Update employee managers
-// View employees by manager
-// Delete departments, roles, and employees
-// View the total utilized budget of a department -- ie the combined salaries of all employees in that department
-
-//1."View Employees"/ READ all, SELECT * FROM
-function viewEmployee() {
-  console.log("Viewing employees\n");
+function queryTable(tblName, qryString){
+  console.log("Viewing " + tblName + "\n");
 
   var query =
-    `SELECT e.id, e.first_name, e.last_name, r.title, d.name AS department, r.salary, CONCAT(m.first_name, ' ', m.last_name) AS manager
-  FROM employee e
-  LEFT JOIN role r
-	ON e.role_id = r.id
-  LEFT JOIN department d
-  ON d.id = r.department_id
-  LEFT JOIN employee m
-	ON m.id = e.manager_id`
+    qryString//`SELECT * from department`
 
   connection.query(query, function (err, res) {
     if (err) throw err;
 
     console.table(res);
-    console.log("Employees viewed!\n");
+    console.log(tblName + " viewed!\n");
 
     firstPrompt();
   });
   // console.log(query.sql);
 }
 
-function viewRole() {
-  console.log("Viewing roles\n");
 
-  var query =
-    `SELECT * from role`
 
-  connection.query(query, function (err, res) {
-    if (err) throw err;
 
-    console.table(res);
-    console.log("Roles viewed!\n");
 
-    firstPrompt();
-  });
-  // console.log(query.sql);
-}
 
-function viewDepartment() {
-  console.log("Viewing departments\n");
-
-  var query =
-    `SELECT * from department`
-
-  connection.query(query, function (err, res) {
-    if (err) throw err;
-
-    console.table(res);
-    console.log("Departments viewed!\n");
-
-    firstPrompt();
-  });
-  // console.log(query.sql);
-}
 
 // 2."View Employees by Department" / READ by, SELECT * FROM
 // Make a department array
@@ -510,3 +483,67 @@ function promptAddRole(departmentChoices) {
 
     });
 }
+
+
+
+
+
+
+// function viewDepartment() {
+//   console.log("Viewing departments\n");
+
+//   var query =
+//     `SELECT * from department`
+
+//   connection.query(query, function (err, res) {
+//     if (err) throw err;
+
+//     console.table(res);
+//     console.log("Departments viewed!\n");
+
+//     firstPrompt();
+//   });
+//   // console.log(query.sql);
+// }
+
+// function viewRole() {
+//   console.log("Viewing roles\n");
+
+//   var query =
+//     `SELECT * from role`
+
+//   connection.query(query, function (err, res) {
+//     if (err) throw err;
+
+//     console.table(res);
+//     console.log("Roles viewed!\n");
+
+//     firstPrompt();
+//   });
+//   // console.log(query.sql);
+// }
+
+// //"View Employees"/ READ all, SELECT * FROM
+// function viewEmployee() {
+//   console.log("Viewing employees\n");
+//   //got lernt from Bobby so I put something a little extra hot sauce here 
+//   var query =
+//     `SELECT e.id, e.first_name, e.last_name, r.title, d.name AS department, r.salary, CONCAT(m.first_name, ' ', m.last_name) AS manager
+//   FROM employee e
+//   LEFT JOIN role r
+// 	ON e.role_id = r.id
+//   LEFT JOIN department d
+//   ON d.id = r.department_id
+//   LEFT JOIN employee m
+// 	ON m.id = e.manager_id`
+
+//   connection.query(query, function (err, res) {
+//     if (err) throw err;
+
+//     console.table(res);
+//     console.log("Employees viewed!\n");
+
+//     firstPrompt();
+//   });
+//   // console.log(query.sql);
+// }
