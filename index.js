@@ -142,8 +142,7 @@ function addRole() {
     console.table(res);
   });
 
-  var query =
-    `SELECT department.id, department.name from department`
+  var query = `SELECT department.id, department.name from department`
 
   connection.query(query, function (err, res) {
     if (err) throw err;
@@ -207,56 +206,61 @@ function promptAddRole(departmentChoices) {
 //"Add employee"
 //show existing list of employees
 function addEmployee() {
+//show the employee table
+//get data from role for inquirer
+//get data from department for inquirer
 
   //show them the employee table so no bad entires
-  var roleTable = 'SELECT * FROM employee'
-  connection.query(roleTable, function (err, res) {
+  let empTable = 'SELECT * FROM employee'
+  connection.query(empTable, function (err, res) {
     console.table(res);
   });
+
   //make a query that gives choices for the role and department 
-  var roleQuery = `SELECT role.title, role.salary, role.department_id FROM role`
-  connection.query(roleQuery, function (err, res) {
-    if (err) throw err;
+  // let roleQuery = `SELECT role.id, role.title, role.salary, role.department_id FROM role`
+  //   connection.query(roleQuery, function (err, res) {
+  //   if (err) throw err;
+  //   console.log(roleQuery);
+  //   let roleChoices = res.map(({ id, title }) => ({
+  //     value: id, title: `${id} ${title}`
+      
+  //   }));
 
-    const roleChoices = res.map(({ title, salary, department_id }) => ({
-      value: title, salary, department_id: `${title} ${salary} ${department_id}`
-    }));
+  // });
 
-  });
-    var deptQuery =
-      `SELECT department.id, department.name from department`
+  let deptQuery = `SELECT department.id, department.name from department`
 
     connection.query(deptQuery, function (err, res) {
-      if (err) throw err;
+    if (err) throw err;
 
-      const departmentChoices = res.map(({ id, name, }) => ({
+      let departmentChoices = res.map(({ id, name, }) => ({
         value: id, name: `${id} ${name}`
       }));
-
-      promptAddEmployee(roleChoices, departmentChoices);
+      console.log(departmentChoices);
+      promptAddEmployee(departmentChoices);
     });
   }
 
-function promptAddEmployee(roleChoices, departmentChoices) {
+function promptAddEmployee(departmentChoices) {
 
       inquirer
         .prompt([
           {
             type: "input",
-            name: "title",
-            message: "Role title?"
+            name: "first_name",
+            message: "Employee first name?"
           },
           {
             type: "input",
-            name: "salary",
-            message: "Role Salary?"
+            name: "last_name",
+            message: "Employee last name?"
           },
-          {
-            type: "list",
-            name: "role",
-            message: "Role?",
-            choices: roleChoices
-          },
+          // {
+          //   type: "list",
+          //   name: "role",
+          //   message: "Role?",
+          //   choices: roleChoices
+          // },
           {
             type: "list",
             name: "department_id",
@@ -267,7 +271,7 @@ function promptAddEmployee(roleChoices, departmentChoices) {
         .then(function (answer) {
           console.log(answer)
           try {
-            var query = connection.query('INSERT INTO role SET ?', answer, function (error, results, fields) {
+            var query = connection.query('INSERT INTO employee SET ?', answer, function (error, results, fields) {
               if (error) throw error;
 
             });
