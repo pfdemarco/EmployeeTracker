@@ -299,7 +299,7 @@ function updateEmployeeRole() {
       {
         type: 'input',
         name: 'id',
-        message:'Please enter the id fo rthe person you want to update'
+        message:'Please enter the id for the person you want to update'
       },
       {
         type: 'input',
@@ -311,6 +311,7 @@ function updateEmployeeRole() {
       connection.query(`UPDATE employee SET role_id='${answer.role_id}' WHERE id='${answer.id}'`)
       //console.log(query.sql);
       //if (error) throw error;
+      //show the table adjusted with new info
       updateTable = 'SELECT * FROM employee'
       connection.query(updateTable, function (err, res) {
         console.table(res);
