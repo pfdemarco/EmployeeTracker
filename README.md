@@ -11,3 +11,7 @@ Developers are often tasked with creating interfaces that make it easy for non-d
 
 ## Link to Github repo
 [Github repo](https://github.com/pfdemarco/EmployeeTracker/)
+
+
+## License
+[License](LICENSE)
